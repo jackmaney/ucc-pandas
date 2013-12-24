@@ -40,7 +40,7 @@ def __trim(data,x,y):
 	return data[[x,y]]
 
 def __avg_of_deltas(data,independent,dependent):
-	return np.ediff1d(data.sort([independent]).rank()[dependent].values).mean()
+	return np.vectorize(abs)(np.ediff1d(data.sort([independent]).rank()[dependent].values)).mean()
 
 def ucc(data,x=None,y=None,copy=False):
 	columns = __validate_and_grab_columns(data,x=x,y=y)
@@ -57,8 +57,8 @@ def ucc(data,x=None,y=None,copy=False):
 	
 	n = dataFrame.shape[0]
 	
-	ucc_x = 1 - __avg_of_deltas(dataFrame,xColumn,yColumn) * 3 / n
-	ucc_y = 1 - __avg_of_deltas(dataFrame,yColumn,xColumn) * 3 / n
+	ucc_x = 1 - ( __avg_of_deltas(dataFrame,xColumn,yColumn) * 3 / (n + 1) )
+	ucc_y = 1 - ( __avg_of_deltas(dataFrame,yColumn,xColumn) * 3 / (n + 1) )
 	ucc = max([ucc_x,ucc_y])
 
 	return Series([ucc_x,ucc_y,ucc],index=['ucc_x','ucc_y','ucc'])
