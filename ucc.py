@@ -29,12 +29,12 @@ def __validate_and_grab_columns(data,x=None,y=None):
 
 	for i in list(range(data.shape[0])):
 		if not __is_actual_number(data[xColumn][i]) or not __is_actual_number(data[yColumn][i]): 
-			raise Exception("Non-numeric values found at row %d (%s,%s)" % (i+1),data[xColumn][i],data[yColumn][i])
+			raise Exception("Non-numeric values found: (" + str(data[xColumn][i]) + "," + str(data[yColumn][i]) + ")")
 
 	return (xColumn,yColumn)
 
 def __is_actual_number(x):
-	return isinstance(x,Number) and not np.isnan(x)
+	return np.isreal(x) and not np.isnan(x)
 
 def __trim(data,x,y):
 	return data[[x,y]]
