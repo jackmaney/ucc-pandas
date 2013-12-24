@@ -39,22 +39,26 @@ def __is_actual_number(x):
 def __trim(data,x,y):
 	return data[[x,y]]
 
-def __ucc_x(data,x,y):
-	return np.ediff1d(data.sort([x]).rank()[y].values).mean()
+def __avg_of_deltas(data,dependent,independent):
+	return np.ediff1d(data.sort([independent]).rank()[dependent].values).mean()
 
-def __ucc_y(data,x,y):
-	return __ucc_x(data,y,x)
-
-def ucc(data,x=None,y=None):
+def ucc(data,x=None,y=None,copy=False):
 	columns = __validate_and_grab_columns(data,x=x,y=y)
 	
-	x = columns[0]
-	y = columns[1]
-
-	dataFrame = __trim(data,x,y).drop_duplicates
-
-	ucc_x = __ucc_x(data,x,y)
-	ucc_y = __ucc_y(data,x,y)
+	xColumn = columns[0]
+	yColumn = columns[1]
+	
+	dataFrame = None
+	
+	if(copy):
+		dataFrame = __trim(data,xColumn,yColumn).drop_duplicates
+	else:
+		dataFrame = data.drop_duplicates([xColumn,yColumn])
+	
+	n = dataFrame.shape[0]
+	
+	ucc_x = 1 - __avg_of_deltas(dataFrame,xColumn,yColumn) * 3 / n
+	ucc_y = 1 - __avg_of_deltas(dataFrame,yColumn,xColumn) * 3 / n
 	ucc = max([ucc_x,ucc_y])
 
 	return Series([ucc_x,ucc_y,ucc],index=['ucc_x','ucc_y','ucc'])
