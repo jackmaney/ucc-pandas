@@ -39,7 +39,7 @@ def __is_actual_number(x):
 def __trim(data,x,y):
 	return data[[x,y]]
 
-def __avg_of_deltas(data,dependent,independent):
+def __avg_of_deltas(data,independent,dependent):
 	return np.ediff1d(data.sort([independent]).rank()[dependent].values).mean()
 
 def ucc(data,x=None,y=None,copy=False):
