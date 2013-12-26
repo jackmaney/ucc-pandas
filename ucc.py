@@ -25,6 +25,8 @@ class UCC:
 
 		self.__check_columns()
 
+		self.dataFrame = self.dataFrame.drop_duplicates(columns)
+
 	def __check_columns(self):
 		if len(self.columns) < 2:
 			raise Exception("At least two columns are required")
@@ -83,8 +85,8 @@ class UCC:
 				independent = self.columns[i]
 				dependent = self.columns[j]
 
-				ucc_x = 1 - ( self.__avg_of_abs_deltas(independent,dependent) * 3 ) / (n + 1)
-				ucc_y = 1 - ( self.__avg_of_abs_deltas(dependent,independent) * 3 ) / (n + 1)
+				ucc_y = 1 - ( self.__avg_of_abs_deltas(independent,dependent) * 3 ) / (n + 1)
+				ucc_x = 1 - ( self.__avg_of_abs_deltas(dependent,independent) * 3 ) / (n + 1)
 
 				ucc = max([ucc_x,ucc_y])
 
