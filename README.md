@@ -9,7 +9,7 @@ TODO
 ==========
 
 * Include tests and examples
-* Extend to computing UCCs for pairs of columns from a given list
+* ~~Extend to computing UCCs for pairs of columns from a given list~~
     * Also, allow for automatic output of scatterplots for pairs having UCC >= a given threshold
 * Print modes:
     * Pretty print mode (for interactive use)
