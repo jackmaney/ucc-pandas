@@ -11,4 +11,6 @@ y = 3 * x + 1
 
 df = DataFrame({'x':x,'y':y})
 
-print ucc.ucc(df)
+u = ucc.UCC(df)
+
+print(u.computeUCC())

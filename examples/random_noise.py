@@ -9,8 +9,8 @@ import ucc
 import numpy as np
 
 
-x = Series(2 * math.pi * np.random.rand(1000))
-y = np.vectorize(math.sin)(x) 
+x = np.random.rand(1000)
+y = np.random.rand(1000)
 
 df = DataFrame({'x':x,'y':y})
 
