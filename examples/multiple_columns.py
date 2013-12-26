@@ -26,8 +26,12 @@ cosApprox = 1 - (xSquared / 2) + (xFourth / 24)
 
 sinApprox = x - (xCubed / 6) + (xFifth / 120)
 
+exp = np.vectorize(math.exp)(x)
+
+expApprox = 1 + (xSquared / 2) + (xCubed / 6) + (xFourth / 24) + (xFifth / 120)
+
 df = DataFrame({'xSquared':xSquared,'xFourth':xFourth,'cosine':cosine,'cosApprox':cosApprox,'sine':sine,
-	'sinApprox':sinApprox})
+	'sinApprox':sinApprox,'exp':exp,'expApprox':expApprox})
 
 u = ucc.UCC(df)
 
