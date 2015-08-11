@@ -3,6 +3,8 @@ import numpy as np
 
 __all__ = ["UCC"]
 
+__output_types__ = ["data_frame", "csv"]
+
 
 class UCC(object):
     def __init__(self, data_frame, columns=None,
@@ -30,11 +32,13 @@ class UCC(object):
     def _validate_input(data_frame):
 
         if not isinstance(data_frame, DataFrame):
-            raise Exception("data_frame argument is not a pandas DataFrame")
+            raise ValueError("data_frame argument is not a pandas DataFrame")
         elif data_frame.empty:
-            raise Exception("The given data frame is empty")
+            raise ValueError("The given data frame is empty")
         elif data_frame.shape[1] < 2:
-            raise Exception("The given data frame must have at least two columns")
+            raise ValueError(
+                "The given data frame must have at least two columns")
+
 
     def _check_columns(self):
         if len(self.columns) < 2:
@@ -75,7 +79,14 @@ class UCC(object):
 
         return np.vectorize(abs)(np.ediff1d(self.data_frame.sort([independent]).rank()[dependent].values)).mean()
 
-    def compute_ucc(self):
+    def compute_ucc(self, output_type="data_frame",
+                    output_file=None):
+
+        if output_type not in __output_types__:
+            raise ValueError(
+                "output_type must be one of: {}".format(
+                    ",".join(__output_types__)
+                ))
 
         n = self.data_frame.shape[0]
         m = len(self.columns)
@@ -99,5 +110,12 @@ class UCC(object):
 
                 results.append(row)
 
-        return DataFrame(results,
-                         columns=['col1', 'col2', 'ucc_x', 'ucc_y', 'ucc'])
+        columns = ['col_x', 'col_y', 'ucc_x', 'ucc_y', 'ucc']
+        output_data_frame = DataFrame(results, columns=columns)
+
+        if output_type == "data_frame":
+            return output_data_frame
+        elif output_type == "csv":
+            return output_data_frame.to_csv(
+                path_or_buf=output_file, index=False)
+
