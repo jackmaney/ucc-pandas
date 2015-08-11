@@ -22,7 +22,7 @@ def main(input_file, output_file, header, columns):
 
     df = pd.read_csv(input_file, header=0 if header else None)
 
-    columns = columns if columns is not None else df.columns
+    columns = columns.split(",") if columns is not None else df.columns
 
     if not all([col in df.columns for col in columns]):
 
