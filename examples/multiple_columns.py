@@ -1,38 +1,35 @@
-from pandas import DataFrame,Series
 import sys
-import os
+
+sys.path = ['..'] + sys.path
+
 import math
 
-sys.path.append(os.path.abspath(".."))
-
-import ucc
+from pandas import DataFrame
+from ucc_pandas import UCC
 import numpy as np
+from math import factorial
 
-x = 4 * math.pi * np.random.rand(10000) - 2 * math.pi
-
-xSquared = x * x
-
-xCubed = x * x * x
-
-xFourth = x * x * x * x
-
-xFifth = x * x * x * x * x
+x = 4 * math.pi * np.random.random_sample(10000) - 2 * math.pi
 
 cosine = np.vectorize(math.cos)(x)
 
+cos_noisy = cosine + (0.2 * np.random.random_sample(10000) - 0.1)
+
 sine = np.vectorize(math.sin)(x)
 
-cosApprox = 1 - (xSquared / 2) + (xFourth / 24)
+sin_noisy = sine + (0.2 * np.random.random_sample(10000) - 0.1)
 
-sinApprox = x - (xCubed / 6) + (xFifth / 120)
+cos_approx = np.sum([((-1) ** i) * x ** i / factorial(i)
+                     for i in range(0, 11, 2)], axis=0)
 
-exp = np.vectorize(math.exp)(x)
+sin_approx = np.sum([((-1) ** i) * x ** i / factorial(i)
+                     for i in range(1, 12, 2)], axis=0)
 
-expApprox = 1 + (xSquared / 2) + (xCubed / 6) + (xFourth / 24) + (xFifth / 120)
+df = DataFrame(
+    dict(x_squared=x ** 2, random=np.random.random_sample(10000),
+         cosine=cosine, cos_approx=cos_approx, cos_noisy=cos_noisy,
+         sine=sine, sin_approx=sin_approx, sin_noisy=sin_noisy))
 
-df = DataFrame({'xSquared':xSquared,'xFourth':xFourth,'cosine':cosine,'cosApprox':cosApprox,'sine':sine,
-	'sinApprox':sinApprox,'exp':exp,'expApprox':expApprox})
+ucc = UCC(df)
 
-u = ucc.UCC(df)
-
-print u.computeUCC()
+print(ucc.compute_ucc())

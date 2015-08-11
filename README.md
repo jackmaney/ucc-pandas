@@ -14,4 +14,4 @@ TODO
 * Print modes:
     * Pretty print mode (for interactive use)
     * CSV output mode (for dumping to file for later).
-* Figure out how to make a proper pip package out of this (with `setup.py` and all that happy stuff).
+* ~~Figure out how to make a proper pip package out of this (with `setup.py` and all that happy stuff).~~

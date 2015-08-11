@@ -1,16 +1,16 @@
-from pandas import DataFrame,Series
 import sys
-import os
 
-sys.path.append(os.path.abspath(".."))
+sys.path = ['..'] + sys.path
 
-import ucc
+from pandas import DataFrame, Series
 
-x = Series(list(range(1,1001)))
-y = 3 * x + 1
+from ucc_pandas import UCC
 
-df = DataFrame({'x':x,'y':y})
+x = Series(list(range(1, 1001)))
+y = (3 * x) + 1
 
-u = ucc.UCC(df)
+df = DataFrame({'x': x, 'y': y})
 
-print(u.computeUCC())
+ucc = UCC(df)
+
+print(ucc.compute_ucc())

@@ -1,19 +1,19 @@
-from pandas import DataFrame,Series
 import sys
-import os
+
+sys.path = ['..'] + sys.path
+
 import math
+from ucc_pandas import UCC
 
-sys.path.append(os.path.abspath(".."))
+from pandas import DataFrame, Series
 
-import ucc
 import numpy as np
-
 
 x = Series(2 * math.pi * np.random.rand(1000))
 y = np.vectorize(math.sin)(x) 
 
-df = DataFrame({'x':x,'y':y})
+df = DataFrame(dict(x=x, y=y))
 
-u = ucc.UCC(df)
+ucc = UCC(df)
 
-print u.computeUCC()
+print(ucc.compute_ucc())
