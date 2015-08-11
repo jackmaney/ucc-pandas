@@ -39,7 +39,6 @@ class UCC(object):
             raise ValueError(
                 "The given data frame must have at least two columns")
 
-
     def _check_columns(self):
         if len(self.columns) < 2:
             raise Exception("At least two columns are required")
@@ -118,4 +117,3 @@ class UCC(object):
         elif output_type == "csv":
             return output_data_frame.to_csv(
                 path_or_buf=output_file, index=False)
-
